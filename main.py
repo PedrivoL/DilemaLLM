@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import textwrap
 import warnings
 import logging
 
@@ -97,7 +98,7 @@ Diretrizes:
 """
 
     def _chamar_com_resiliencia(self, callback_geracao):
-        """Tenta executar a requisição e, em caso de erro 503 (servidor ocupado), tenta novamente ou usa fallback."""
+        """Tenta executar a requisição e, em caso de erro 503 ou 429, realiza retentativas e fallback de modelos."""
         modelos_para_tentar = [self.model] + [m for m in self.MODELOS_DISPONIVEIS if m != self.model]
         ultimo_erro = None
 
@@ -107,10 +108,13 @@ Diretrizes:
                     return callback_geracao(modelo)
                 except (ServerError, ClientError) as e:
                     ultimo_erro = e
-                    # Se for erro 503 (alta demanda no Google), aguarda e tenta de novo ou muda de modelo
-                    if "503" in str(e) or getattr(e, 'code', None) == 503:
-                        tempo_espera = (tentativa + 1) * 2
-                        print(f"[AVISO] Modelo {modelo} com alta demanda (503). Tentando novamente em {tempo_espera}s...")
+                    msg_erro = str(e)
+                    
+                    # Erro 503 (sobrecarga) ou 429 (limite de requisições por minuto no tier gratuito)
+                    if "503" in msg_erro or "429" in msg_erro or getattr(e, 'code', None) in (429, 503):
+                        tempo_espera = (tentativa + 1) * 3
+                        tipo_erro = "limite temporário (429)" if ("429" in msg_erro or getattr(e, 'code', None) == 429) else "alta demanda (503)"
+                        print(f"[AVISO] Modelo {modelo} com {tipo_erro}. Nova tentativa em {tempo_espera}s...")
                         time.sleep(tempo_espera)
                         continue
                     raise e
@@ -165,6 +169,25 @@ Diretrizes:
         return self._chamar_com_resiliencia(_executar)
 
 
+def formatar_paragrafo(texto: str, largura: int = 80, prefixo: str = "", indent_subsequente: str = "") -> str:
+    """Formata o texto em parágrafos respeitando uma largura máxima de linha."""
+    linhas = texto.strip().split("\n")
+    resultado = []
+    for linha in linhas:
+        if linha.strip():
+            resultado.append(
+                textwrap.fill(
+                    linha,
+                    width=largura,
+                    initial_indent=prefixo,
+                    subsequent_indent=indent_subsequente if indent_subsequente else prefixo
+                )
+            )
+        else:
+            resultado.append("")
+    return "\n".join(resultado)
+
+
 # ==========================================
 # 4. TESTE PRÁTICO
 # ==========================================
@@ -181,7 +204,7 @@ if __name__ == "__main__":
 
     print("=" * 60)
     print("1. RESPOSTA ESTRUTURADA (JSON / PYDANTIC)")
-    print("=" * 60)
+    print("=" * 60 + "\n")
 
     relatorio = analisador.analisar_estruturado(
         dilema=dilema,
@@ -189,16 +212,19 @@ if __name__ == "__main__":
         tom=TomResposta.PRAGMATICO
     )
 
-    print(f"Resumo: {relatorio.resumo_dilema}\n")
-    print(f"Conflito Central: {relatorio.conflito_central}\n")
-    print(f"Recomendação: {relatorio.recomendacao_final}\n")
+    print(formatar_paragrafo(f"Resumo: {relatorio.resumo_dilema}", largura=80))
+    print()
+    print(formatar_paragrafo(f"Conflito Central: {relatorio.conflito_central}", largura=80))
+    print()
+    print(formatar_paragrafo(f"Recomendação: {relatorio.recomendacao_final}", largura=80))
+    print()
     print("Perguntas para Reflexão:")
     for p in relatorio.perguntas_para_reflexao:
-        print(f"  • {p}")
+        print(formatar_paragrafo(f"• {p}", largura=80, prefixo="  ", indent_subsequente="    "))
 
     print("\n" + "=" * 60)
     print("2. RESPOSTA EM TEXTO LIVRE (DEBATE SOCRÁTICO)")
-    print("=" * 60)
+    print("=" * 60 + "\n")
 
     texto = analisador.analisar_texto_livre(
         dilema=dilema,
@@ -206,4 +232,5 @@ if __name__ == "__main__":
         tom=TomResposta.SOCRATICO,
         formato="Diálogo curto em forma de perguntas instigantes."
     )
-    print(texto)
+    print(formatar_paragrafo(texto, largura=80))
+    print()
