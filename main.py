@@ -1,8 +1,23 @@
 import os
+import sys
+import time
+import warnings
+import logging
+
+# Configuração de encoding UTF-8 para o terminal Windows e silenciamento de warnings
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
+warnings.filterwarnings("ignore")
+logging.getLogger("google.genai").setLevel(logging.ERROR)
+
 from enum import Enum
 from typing import List
 from google import genai
 from google.genai import types
+from google.genai.errors import ServerError, ClientError
 from pydantic import BaseModel, Field
 
 
@@ -56,16 +71,6 @@ class RelatorioEtico(BaseModel):
     perguntas_para_reflexao: List[str] = Field(description="Perguntas críticas para reflexão")
 
 
-import time
-import warnings
-import logging
-from google.genai.errors import ServerError, ClientError
-
-# Silenciar avisos internos do SDK
-warnings.filterwarnings("ignore")
-logging.getLogger("google.genai").setLevel(logging.ERROR)
-
-
 # ==========================================
 # 3. ANALISADOR COM GOOGLE GEMINI
 # ==========================================
@@ -105,7 +110,7 @@ Diretrizes:
                     # Se for erro 503 (alta demanda no Google), aguarda e tenta de novo ou muda de modelo
                     if "503" in str(e) or getattr(e, 'code', None) == 503:
                         tempo_espera = (tentativa + 1) * 2
-                        print(f"⏳ Modelo {modelo} em alta demanda no Google (503). Nova tentativa em {tempo_espera}s...")
+                        print(f"[AVISO] Modelo {modelo} com alta demanda (503). Tentando novamente em {tempo_espera}s...")
                         time.sleep(tempo_espera)
                         continue
                     raise e
