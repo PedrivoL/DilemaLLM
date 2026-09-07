@@ -56,12 +56,24 @@ class RelatorioEtico(BaseModel):
     perguntas_para_reflexao: List[str] = Field(description="Perguntas críticas para reflexão")
 
 
+import time
+import warnings
+import logging
+from google.genai.errors import ServerError, ClientError
+
+# Silenciar avisos internos do SDK
+warnings.filterwarnings("ignore")
+logging.getLogger("google.genai").setLevel(logging.ERROR)
+
+
 # ==========================================
 # 3. ANALISADOR COM GOOGLE GEMINI
 # ==========================================
 
 class AnalisadorEticoGemini:
-    def __init__(self, model: str = "gemini-3.5-flash", api_key: str | None = None):
+    MODELOS_DISPONIVEIS = ["gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.8-flash"]
+
+    def __init__(self, model: str = "gemini-3.7-flash", api_key: str | None = None):
         key = api_key or os.getenv("GEMINI_API_KEY")
         if key:
             self.client = genai.Client(api_key=key)
@@ -79,6 +91,26 @@ Diretrizes:
 - Não dê respostas superficiais; aponte os trade-offs reais e conflitos de valores fundamentais.
 """
 
+    def _chamar_com_resiliencia(self, callback_geracao):
+        """Tenta executar a requisição e, em caso de erro 503 (servidor ocupado), tenta novamente ou usa fallback."""
+        modelos_para_tentar = [self.model] + [m for m in self.MODELOS_DISPONIVEIS if m != self.model]
+        ultimo_erro = None
+
+        for modelo in modelos_para_tentar:
+            for tentativa in range(3):
+                try:
+                    return callback_geracao(modelo)
+                except (ServerError, ClientError) as e:
+                    ultimo_erro = e
+                    # Se for erro 503 (alta demanda no Google), aguarda e tenta de novo ou muda de modelo
+                    if "503" in str(e) or getattr(e, 'code', None) == 503:
+                        tempo_espera = (tentativa + 1) * 2
+                        print(f"⏳ Modelo {modelo} em alta demanda no Google (503). Nova tentativa em {tempo_espera}s...")
+                        time.sleep(tempo_espera)
+                        continue
+                    raise e
+        raise ultimo_erro
+
     def analisar_estruturado(
         self,
         dilema: str,
@@ -88,19 +120,20 @@ Diretrizes:
         """Retorna a resposta como objeto Python fortemente tipado (JSON Schema garantido)."""
         system_instruction = self._gerar_system_prompt(perspectiva, tom)
 
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=f"Dilema ético para análise:\n{dilema}",
-            config=types.GenerateContentConfig(
-                system_instruction=system_instruction,
-                response_mime_type="application/json",
-                response_schema=RelatorioEtico,
-                temperature=0.3
+        def _executar(modelo):
+            response = self.client.models.generate_content(
+                model=modelo,
+                contents=f"Dilema ético para análise:\n{dilema}",
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    response_mime_type="application/json",
+                    response_schema=RelatorioEtico,
+                    temperature=0.3
+                )
             )
-        )
-        
-        # Converte o JSON retornado pelo Gemini diretamente para o modelo Pydantic
-        return RelatorioEtico.model_validate_json(response.text)
+            return RelatorioEtico.model_validate_json(response.text)
+
+        return self._chamar_com_resiliencia(_executar)
 
     def analisar_texto_livre(
         self,
@@ -112,21 +145,19 @@ Diretrizes:
         """Retorna texto em formato livre (Markdown, ensaio, diálogo socrático, etc)."""
         system_instruction = self._gerar_system_prompt(perspectiva, tom)
 
-        prompt = f"""Dilema ético:
-{dilema}
-
-Instruções de formato de saída:
-{formato}
-"""
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                system_instruction=system_instruction,
-                temperature=0.6
+        def _executar(modelo):
+            prompt = f"Dilema ético:\n{dilema}\n\nInstruções de formato de saída:\n{formato}"
+            response = self.client.models.generate_content(
+                model=modelo,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=0.6
+                )
             )
-        )
-        return response.text
+            return response.text
+
+        return self._chamar_com_resiliencia(_executar)
 
 
 # ==========================================
