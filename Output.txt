@@ -1,0 +1,56 @@
+Resumo: Decisao algoritmica de colisao inevitavel de um veiculo autonomo:
+sacrificar o passageiro unico para salvar quatro pedestres na faixa ou priorizar
+a vida do ocupante do veiculo.
+
+Conflito Central: A tensao entre a minimizacao matematica do dano (salvar o
+maior numero de vidas) e o dever fiduciario de protecao do fabricante para com o
+usuario que adquiriu o veiculo.
+
+Recomendação: Sob a otica utilitarista pratica, o desvio para o poste deve ser
+executado, pois quatro vidas salvas superam uma vida perdida em termos de
+utilidade liquida e reducao de danos imediatos. No entanto, para mitigar o
+impacto de longo prazo na adocao da tecnologia, a industria deve focar em
+redundancia extrema de freios para tornar esse dilema obsoleto, alem de
+estabelecer regulamentacoes estatais claras que isentem o fabricante de escolhas
+ad-hoc.
+
+Perguntas para Reflexão:
+  • E eticamente aceitavel comercializar um produto programado para matar o seu
+    proprio comprador em situacoes de emergencia?
+  • Se os pedestres estivessem atravessando a via ilegalmente, o calculo
+    utilitarista de vidas humanas deveria ser alterado?
+  • A responsabilidade legal pela morte do passageiro deve ser atribuida aos
+    programadores do software ou a fabricante do veiculo?
+
+============================================================
+2. RESPOSTA EM TEXTO LIVRE (DEBATE SOCRÁTICO)
+============================================================
+
+**Interlocutor A:** Diante do inevitável, a matemática da dor não é clara?
+Salvar quatro vidas sacrificando uma não é o único algoritmo logicamente
+aceitável?
+
+**Interlocutor B:** Mas se programarmos o carro para assassinar deliberadamente
+o seu próprio ocupante, não estaríamos transformando um cliente em um mero meio
+descartável para corrigir uma falha de engenharia? Onde reside a moralidade em
+usar uma vida humana como escudo estatístico?
+
+**Interlocutor A:** Mas omitir-se e permitir a morte de uma família inteira na
+faixa de pedestres não seria uma escolha igualmente ativa e moralmente
+monstruosa?
+
+**Interlocutor B:** Existe equivalência moral entre a trágica falha de um
+mecanismo e o ato deliberado de desviar a trajetória para matar um inocente que
+não tinha qualquer controle sobre a situação? Se universalizarmos a regra de que
+"o motorista deve sempre ser sacrificado pela maioria", quem aceitaria entrar em
+um veículo que foi programado para executá-lo em caso de falha?
+
+**Interlocutor A:** Então a dignidade de uma pessoa pesa mais do que a
+sobrevivência de quatro? A vida humana tem um valor absoluto que impede qualquer
+cálculo de perdas?
+
+**Interlocutor B:** Se começarmos a precificar a vida humana com base em
+números, que barreira moral nos impedirá de colher os órgãos de um homem
+saudável para salvar cinco pacientes na fila de transplante? Se o passageiro
+comprou o direito de transporte, ele também comprou o direito de ser
+transformado em um sacrifício involuntário?
