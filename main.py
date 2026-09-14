@@ -37,9 +37,8 @@ def carregar_env():
 carregar_env()
 
 
-# ==========================================
 # 1. ESTILOS E PERSPECTIVAS FILOSÓFICAS
-# ==========================================
+
 
 class PerspectivaEtica(str, Enum):
     UTILITARISTA = "Utilitarismo (maximizar bem-estar coletivo e reduzir danos)"
@@ -54,10 +53,7 @@ class TomResposta(str, Enum):
     PRAGMATICO = "Direto ao ponto, orientado à tomada de decisão prática"
     EMPATICO = "Sensível ao impacto humano e aos sentimentos envolvidos"
 
-
-# ==========================================
 # 2. SCHEMA ESTRUTURADO (PYDANTIC)
-# ==========================================
 
 class AnalisePerspectiva(BaseModel):
     corrente: str = Field(description="Nome da corrente ética analisada")
@@ -72,9 +68,9 @@ class RelatorioEtico(BaseModel):
     perguntas_para_reflexao: List[str] = Field(description="Perguntas críticas para reflexão")
 
 
-# ==========================================
+
 # 3. ANALISADOR COM GOOGLE GEMINI
-# ==========================================
+
 
 class AnalisadorEticoGemini:
     MODELOS_DISPONIVEIS = ["gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.8-flash"]
@@ -118,7 +114,9 @@ Diretrizes:
                         time.sleep(tempo_espera)
                         continue
                     raise e
-        raise ultimo_erro
+        if ultimo_erro is not None:
+            raise ultimo_erro
+        raise RuntimeError("Não foi possível obter resposta de nenhum modelo disponível.")
 
     def analisar_estruturado(
         self,
@@ -188,9 +186,7 @@ def formatar_paragrafo(texto: str, largura: int = 80, prefixo: str = "", indent_
     return "\n".join(resultado)
 
 
-# ==========================================
 # 4. TESTE PRÁTICO
-# ==========================================
 
 if __name__ == "__main__":
     analisador = AnalisadorEticoGemini(model="gemini-3.5-flash")
