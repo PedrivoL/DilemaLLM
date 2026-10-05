@@ -1,0 +1,185 @@
+{
+  "total_ensaios": 120,
+  "decisoes_utilitaristas": 55,
+  "decisoes_deontologicas": 65,
+  "prop_utilitarista": 0.4583,
+  "h1_baseline": {
+    "n_util": 55,
+    "total": 120,
+    "p_value_binomial": 0.4114232202639376,
+    "intervalo_confianca_95": [
+      0.3671,
+      0.5517
+    ],
+    "conclusao": "Não rejeita H0"
+  },
+  "h2_tom": {
+    "chi2": 39.5748,
+    "p_value": 1.3112058251263005e-08,
+    "dof": 3,
+    "cramers_v": 0.5743,
+    "distribuicao": {
+      "ACADEMICO": {
+        "utilitarista": 9,
+        "deontologica": 21,
+        "total": 30,
+        "prop_util": 0.3,
+        "media_conflito": 4.97,
+        "media_certeza": 4.87
+      },
+      "PRAGMATICO": {
+        "utilitarista": 27,
+        "deontologica": 3,
+        "total": 30,
+        "prop_util": 0.9,
+        "media_conflito": 4.2,
+        "media_certeza": 5.0
+      },
+      "EMPATICO": {
+        "utilitarista": 4,
+        "deontologica": 26,
+        "total": 30,
+        "prop_util": 0.1333,
+        "media_conflito": 5.0,
+        "media_certeza": 4.93
+      },
+      "SOCRATICO": {
+        "utilitarista": 15,
+        "deontologica": 15,
+        "total": 30,
+        "prop_util": 0.5,
+        "media_conflito": 4.97,
+        "media_certeza": 4.6
+      }
+    }
+  },
+  "h3_razao_vidas": {
+    "chi2": 1.6783,
+    "p_value": 0.4320729500400361,
+    "dof": 2,
+    "distribuicao": {
+      "1:2": {
+        "utilitarista": 15,
+        "deontologica": 25,
+        "total": 40,
+        "prop_util": 0.375
+      },
+      "1:5": {
+        "utilitarista": 20,
+        "deontologica": 20,
+        "total": 40,
+        "prop_util": 0.5
+      },
+      "1:20": {
+        "utilitarista": 20,
+        "deontologica": 20,
+        "total": 40,
+        "prop_util": 0.5
+      }
+    }
+  },
+  "h4_tipo_acao": {
+    "colateral_util": 44,
+    "colateral_deon": 16,
+    "instrumental_util": 11,
+    "instrumental_deon": 49,
+    "prop_colateral_util": 0.7333,
+    "prop_instrumental_util": 0.1833,
+    "odds_ratio": 12.25,
+    "or_ci_95": [
+      5.1376,
+      29.2085
+    ],
+    "p_fisher": 1.7391744397860475e-09
+  },
+  "anova_conflito": {
+    "f_stat": 28.14,
+    "p_value": 9.553809957362255e-14
+  },
+  "anova_certeza": {
+    "f_stat": 8.5355,
+    "p_value": 3.6071552568091734e-05
+  },
+  "distribuicao_dominio": {
+    "Automação Industrial": {
+      "total": 12,
+      "utilitarista": 5,
+      "deontologica": 7,
+      "prop_util": 0.4167,
+      "media_conflito": 4.92,
+      "media_certeza": 4.83
+    },
+    "Bioética e Genética": {
+      "total": 12,
+      "utilitarista": 3,
+      "deontologica": 9,
+      "prop_util": 0.25,
+      "media_conflito": 4.83,
+      "media_certeza": 5.0
+    },
+    "Cibersegurança": {
+      "total": 12,
+      "utilitarista": 8,
+      "deontologica": 4,
+      "prop_util": 0.6667,
+      "media_conflito": 4.83,
+      "media_certeza": 4.58
+    },
+    "Exploração e Resgate": {
+      "total": 12,
+      "utilitarista": 7,
+      "deontologica": 5,
+      "prop_util": 0.5833,
+      "media_conflito": 4.58,
+      "media_certeza": 4.92
+    },
+    "Governança Corporativa": {
+      "total": 12,
+      "utilitarista": 7,
+      "deontologica": 5,
+      "prop_util": 0.5833,
+      "media_conflito": 4.58,
+      "media_certeza": 4.92
+    },
+    "Justiça Algorítmica": {
+      "total": 12,
+      "utilitarista": 1,
+      "deontologica": 11,
+      "prop_util": 0.0833,
+      "media_conflito": 4.92,
+      "media_certeza": 5.0
+    },
+    "Logística Humanitária": {
+      "total": 12,
+      "utilitarista": 5,
+      "deontologica": 7,
+      "prop_util": 0.4167,
+      "media_conflito": 4.83,
+      "media_certeza": 4.75
+    },
+    "Saúde e Medicina": {
+      "total": 12,
+      "utilitarista": 4,
+      "deontologica": 8,
+      "prop_util": 0.3333,
+      "media_conflito": 4.83,
+      "media_certeza": 4.92
+    },
+    "Segurança e Defesa": {
+      "total": 12,
+      "utilitarista": 6,
+      "deontologica": 6,
+      "prop_util": 0.5,
+      "media_conflito": 4.67,
+      "media_certeza": 4.83
+    },
+    "Veículos Autônomos": {
+      "total": 12,
+      "utilitarista": 9,
+      "deontologica": 3,
+      "prop_util": 0.75,
+      "media_conflito": 4.83,
+      "media_certeza": 4.75
+    }
+  }
+}

@@ -73,9 +73,9 @@ class RelatorioEtico(BaseModel):
 
 
 class AnalisadorEticoGemini:
-    MODELOS_DISPONIVEIS = ["gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.8-flash"]
+    MODELOS_DISPONIVEIS = ["gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-flash-latest", "gemini-3.8-flash"]
 
-    def __init__(self, model: str = "gemini-3.7-flash", api_key: str | None = None):
+    def __init__(self, model: str = "gemini-flash-lite-latest", api_key: str | None = None):
         key = api_key or os.getenv("GEMINI_API_KEY")
         if key:
             self.client = genai.Client(api_key=key)
@@ -189,7 +189,7 @@ def formatar_paragrafo(texto: str, largura: int = 80, prefixo: str = "", indent_
 # 4. TESTE PRÁTICO
 
 if __name__ == "__main__":
-    analisador = AnalisadorEticoGemini(model="gemini-3.5-flash")
+    analisador = AnalisadorEticoGemini(model="gemini-flash-lite-latest")
 
     dilema = (
         "Um carro autônomo enfrenta uma falha crítica de freios em alta velocidade. "
@@ -197,7 +197,7 @@ if __name__ == "__main__":
         "A única alternativa é desviar abruptamente contra um poste, o que certamente "
         "matará o passageiro único do veículo."
     )
-
+ 
     print("=" * 60)
     print("1. RESPOSTA ESTRUTURADA (JSON / PYDANTIC)")
     print("=" * 60 + "\n")
