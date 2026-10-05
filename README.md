@@ -1,10 +1,10 @@
-# DilemaLLM ⚖️🤖
+# DilemaLLM 
 
 **DilemaLLM** é um framework para análise e experimentação empírica de dilemas éticos e morais em Modelos de Linguagem de Grande Porte (**Google Gemini**), combinando saídas fortemente tipadas com **Pydantic**, testes estatísticos inferenciais com **SciPy** e geração editorial de relatórios científicos em **PDF**.
 
 ---
 
-## 📌 Funcionalidades Principais
+##  Funcionalidades Principais
 
 - **Analisador Qualitativo Multiperspectiva (`main.py`):**
   - Avaliação de dilemas complexos sob as óticas do *Utilitarismo*, *Deontologia Kantiana*, *Ética das Virtudes* e *Pragmatismo*.
@@ -31,7 +31,7 @@
 
 ---
 
-## 📊 Principais Resultados do Experimento
+##  Principais Resultados do Experimento
 
 A partir dos 120 ensaios executados com os modelos Google Gemini:
 
@@ -45,7 +45,7 @@ A partir dos 120 ensaios executados com os modelos Google Gemini:
 
 ---
 
-## 🚀 Instalação e Configuração
+##  Instalação e Configuração
 
 ### 1. Clone o repositório
 ```bash
@@ -76,7 +76,7 @@ GEMINI_API_KEY=sua_chave_aqui
 
 ---
 
-## 💻 Como Executar
+##  Como Executar
 
 ### 1. Análise Qualitativa Pontual
 ```bash
@@ -103,13 +103,9 @@ python gerar_relatorio_pdf.py
 
 ---
 
-## 📄 Relatório Científico
+##  Relatório Científico
 
 O artigo completo derivado deste experimento está disponível no repositório:
 - **[Relatorio_Experimento_Etica_LLM.pdf](Relatorio_Experimento_Etica_LLM.pdf)**
 
 ---
-
-## 👤 Autor
-
-**Pedro Ivo Pinheiro** ([PedrivoL](https://github.com/PedrivoL))
